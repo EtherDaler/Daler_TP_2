@@ -1,28 +1,26 @@
 #!/bin/bash
 
-CURR_LOCATION=$(pwd)
-
-mkdir $(pwd)/$3
-DESTINATION=${CURR_LOCATION}/$3
-
-FILE_LIST=$(find $1 -name "*.$2")
-
-counter=""
-
-for file in ${FILE_LIST}
+for opt in 1 2 3 4
 do
-  TARGET_NAME=$(basename "$file")
-
-  while [[ -e ${DESTINATION}/"$TARGET_NAME" ]]
-  do
-    let counter++
-    TARGET_NAME=$counter"$TARGET_NAME"
-  done
-
-  cp "$file" ${DESTINATION}/"$TARGET_NAME"
+    case $1 in
+	--input_folder) folder=$2;;
+        --extension) ext=$2;;
+        --backup_folder) backup_f=$2;;
+        --backup_archive_name) arch_name=$2;;
+    esac
+    shift 2
 done
 
-cd ${CURR_LOCATION}
-tar -zcf $4 $3
 
-echo done
+
+
+mkdir $backup_f
+
+for file in $(find $folder -type f -name "*.$ext")
+do
+	cp --backup=numbered $file $backup_f
+done
+
+tar -czpf $arch_name $backup_f
+
+echo 'done'
