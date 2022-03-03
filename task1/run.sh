@@ -1,6 +1,6 @@
 #!/bin/bash
 
-while [ -n $1 ]
+while [ -n "$1" ]
 do
     case $1 in
 	--input_folder) folder=$2;;
