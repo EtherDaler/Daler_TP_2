@@ -1,7 +1,6 @@
-#ifndef MAIN_H_
-#define MAIN_H_
+#ifndef MAIN_H
+#define MAIN_H
 #include "A/index.h"
 #include "B/lib.h"
-#include <iostream>
 #endif
 
