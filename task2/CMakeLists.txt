@@ -23,7 +23,7 @@ endif()
 add_executable(C ${FILES})
 
 execute_process(
-	COMMAND python3 ${PROJECT_SOURCE_DIR}/A/preparing.py
+	COMMAND python3 ${PROJECT_SOURCE_DIR}/A/preparing.py ${PROJECT_SOURCE_DIR}/A/index.h
 	WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/A
 	)
 
