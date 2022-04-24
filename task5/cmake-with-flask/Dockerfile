@@ -1,4 +1,4 @@
-FROM ubuntu
+FROM ubuntu:20.04
 
 LABEL maintainer="khodzhimatov.di@phystech.edu"
 
@@ -8,11 +8,11 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 RUN mkdir opt/techprog
 
-ENV USER = "tp2022user"
+ENV ADMIN=tp2022user
 
 COPY . opt/techprog
 
-WORKDIR /opt/techprog
+WORKDIR ./opt/techprog
 
 RUN apt-get update -y
 
@@ -24,9 +24,9 @@ RUN pip install Flask
 
 RUN cd /opt/techprog && mkdir build && cd build &&  cmake .. && make
 
-RUN useradd -m -s /bin/bash tp2022user
+RUN useradd -m -s /bin/bash $ADMIN
 
-USER tp2022user
+USER $ADMIN
 
 EXPOSE 5000
 
