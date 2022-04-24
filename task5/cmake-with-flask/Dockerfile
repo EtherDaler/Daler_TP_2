@@ -14,9 +14,9 @@ COPY . opt/techprog
 
 WORKDIR ./opt/techprog
 
-RUN apt-get update -y
+RUN apt-get update
 
-RUN apt-get install -y make cmake python3 python3-pip
+RUN apt-get install -y make cmake python3 python3-pip g++
 
 RUN pip install --upgrade pip
 
@@ -30,6 +30,4 @@ USER $ADMIN
 
 EXPOSE 5000
 
-RUN ["export", "FLASK_APP=opt/techprog/app.py:app"]
-
-CMD ["flask", "run", "--port", "8898", "--host", "0.0.0.0"]
+CMD ["python3", "opt/techprog/app.py", "--port", "8898", "--host", "0.0.0.0"]
