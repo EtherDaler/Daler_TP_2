@@ -22,7 +22,7 @@ jobs:
         mkdir build
         mkdir output
         cd build
-        GOOGLE_TEST_DIR=googletest cmake -DCMAKE_INSTALL_PREFIX=$(pwd)/output ..
+        cmake -DCMAKE_INSTALL_PREFIX=$(pwd)/output ..
         make
         make install
         
