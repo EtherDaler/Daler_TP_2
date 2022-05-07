@@ -1,0 +1,44 @@
+name: C/C++ CI
+
+on:
+  push:
+    branches: [ task6 ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check Code
+      uses: actions/checkout@v3
+    - name: Build
+      run: |
+        cd task6
+        mkdir 3rdparty
+        mkdir build
+        mkdir output
+        git clone https://github.com/google/googletest.git 3rdparty
+        cd build
+        GOOGLE_TEST_DIR=3rdparty cmake -DCMAKE_INSTALL_PREFIX=$(pwd)/output ..
+        make
+        make install
+        
+    - uses: akhtyamovpavel/ActionGtestReport@v0.0.9
+      with:
+        exec-path: bin/CTestExe
+        report-path: report.xml
+        working-directory: task6/
+        
+    - name: Test
+      run: |
+        cd task6
+        tar -zcf test-report.tar.gz report.xml
+    
+    - name: UploadArtifacts
+      uses: actions/upload-artifact@v1
+      with:
+        name: Distributive
+        path: task6/output/exe/
