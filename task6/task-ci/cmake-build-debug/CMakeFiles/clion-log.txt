@@ -1,1 +1,0 @@
-CMakeLists.txt not found in C:\Users\Daler Hojimatov\Desktop\Game_TP\Pussy Knight\Daler_TP_2\task6\task-ci Select CMakeLists.txt
