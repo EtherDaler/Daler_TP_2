@@ -21,8 +21,9 @@ jobs:
         mv googletest 3rdparty
         mkdir build
         mkdir output
+        MAIN_DIR=$(pwd)
         cd build
-        cmake -DCMAKE_INSTALL_PREFIX=$(pwd)/output ..
+        cmake -DCMAKE_INSTALL_PREFIX=${MAIN_DIR}/output ..
         make
         make install
         
