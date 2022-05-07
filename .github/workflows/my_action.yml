@@ -22,7 +22,7 @@ jobs:
         mkdir build
         mkdir output
         cd build
-        GOOGLE_TEST_DIR=googletest cmake ..
+        GOOGLE_TEST_DIR=googletest cmake -DCMAKE_INSTALL_PREFIX=$(pwd)/output ..
         make
         make install
         
@@ -41,4 +41,4 @@ jobs:
       uses: actions/upload-artifact@v1
       with:
         name: Distributive
-        path: task6/build/exe/
+        path: task6/output/exe/
