@@ -36,7 +36,7 @@ def requests_get(*args, **kwargs):
 
 
 @mock.patch('requests.get', side_effect=requests_get)
-def test_weather_get():
+def test_weather_get(mock_get):
     global API_KEY, CITY_M
     tmp = WeatherWrapper(API_KEY).get_temperature(CITY_M)
     response = WeatherWrapper(API_KEY).get_response_city(CITY_M, BASE_URL)
@@ -44,7 +44,7 @@ def test_weather_get():
 
 
 @mock.patch('requests.get', side_effect=requests_get)
-def test_city_error():
+def test_city_error(mock_get):
     global API_KEY, CITY_M
     with pytest.raises(AttributeError) as e:
         WeatherWrapper(API_KEY).get_response_city(CITY_M, '1')
@@ -52,8 +52,8 @@ def test_city_error():
 
 
 @mock.patch('requests.get', side_effect=requests_get)
-def test_weather_get_diff_string():
-    global CITY_M, CITY_D
+def test_weather_get_diff_string(mock_get):
+    global API_KEY, CITY_M, CITY_D
     data = WeatherWrapper(API_KEY).find_diff_two_cities(CITY_M, CITY_D)
     s_wait_data = f'Weather in {CITY_M} is warmer than in {CITY_D} by {data} degrees'
     s_data = WeatherWrapper(API_KEY).get_diff_string(CITY_M, CITY_D)
@@ -78,7 +78,7 @@ def tomorrow_diff(city, temp1, temp2):
 
 @mock.patch('requests.get')
 def test_weather_get_tomorrow_diff(fake_request):
-    global CITY_M
+    global API_KEY, CITY_M
     res = []
     data = {(18,19), (19, 18), (18, 18), (18, 22), (22, 18)}
     wait_data = [
@@ -89,8 +89,8 @@ def test_weather_get_tomorrow_diff(fake_request):
         "The weather in Moscow tomorrow will be much warmer than today"
     ]
     weather = WeatherWrapper(API_KEY)
-    for i in data:
-        fake_request.side_effect = tomorrow_diff(CITY_M, i[0], i[1])
-        request = weather.get_tomorrow_diff(CITY_M)
-        res.append(request)
+    for i in range(len(data)):
+        fake_request.side_effect = tomorrow_diff(CITY_M, data[i][0], data[i][1])
+        response = weather.get_tomorrow_diff(CITY_M)
+        res.append(response)
     assert wait_data == res
