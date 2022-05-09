@@ -80,7 +80,7 @@ def tomorrow_diff(city, temp1, temp2):
 def test_weather_get_tomorrow_diff(fake_request):
     global API_KEY, CITY_M
     res = []
-    data = {(18,19), (19, 18), (18, 18), (18, 22), (22, 18)}
+    data = [(18,19), (19, 18), (18, 18), (18, 22), (22, 18)]
     wait_data = [
         "The weather in Moscow tomorrow will be colder than today",
         "The weather in Moscow tomorrow will be warmer than today",
