@@ -14,22 +14,25 @@ def test_tree_construct():
 
 def test_tree_non_path():
     with pytest.raises(AttributeError) as e:
-        Tree().get('./some-shit-which-u-really-dont-have', False)
+        Tree().get('./some-folder-which-u-really-dont-have', False)
     message = e.value.args[0]
     assert message == 'Path not exist'
 
-
-def test_tree_recurse_call():
+@pytest.fixture()
+def file_data():
+    """Return answer to ultimate question."""
     file_temp = tempfile.NamedTemporaryFile()
-    assert None == Tree().get(file_temp.name, True, True)
+    return file_temp.name
+
+def test_tree_recurse_call(file_data):
+    assert None == Tree().get(file_data, True, True)
 
 
-def test_tree_recurse_call_er():
-    file_temp = tempfile.NamedTemporaryFile()
-    try:
-        Tree().get(file_temp.name, True, False)
-    except AttributeError as e:
-        assert 1 == 1
+def test_tree_recurse_call_er(file_data):
+    with pytest.raises(AttributeError) as e:
+        Tree().get(file_data, True, False)
+    message = e.value.args[0]
+    assert message == 'Path is not directory'
 
 
 def test_tree_raises_3():
@@ -37,7 +40,7 @@ def test_tree_raises_3():
     node = Tree().construct_filenode(dir.name, True)
     os.mkdir(f'{dir.name}/qwe', mode=0o777)
     Tree().filter_empty_nodes(node, dir.name)
-    try:
+    with pytest.raises(FileNotFoundError) as e:
         print(os.listdir(dir.name))
-    except FileNotFoundError:
-        assert 1 == 1
+    message = e.value.args[1]
+    assert message == "No such file or directory"
